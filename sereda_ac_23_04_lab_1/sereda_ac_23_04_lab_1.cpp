@@ -23,7 +23,9 @@ struct Station {
     float station_efficiency = 0.0;
 };
 
-void AddPip(Pipe& p) {
+//Добавление трубы
+
+void AddPipe(Pipe& p) {
     cout << "Enter the name of the pipe (Positive value): ";
     getline(cin, p.name);
 
@@ -32,5 +34,23 @@ void AddPip(Pipe& p) {
     while(!(cin >> p.length) || p.length <=0) {
         cout << "Invalid value. Enter a positive number";
     }
+
+    cout << "Enter the diameter of the pipe: ";
+
+    while(!(cin >> p.diameter) || p.diameter <=0) {
+        cout << "Invalid value. Enter a positive number";
+    }
+
+    p.inrepair = false;
+}
+
+// Вывод информации о трубек
+
+void ViewPipe(Pipe p) {
+    cout << "Information about the pipe:";
+    cout << "Name: " << p.name << endl;
+    cout << "Length: " << p.length << endl;
+    cout << "Diameter: " << p.diameter << endl;
+    cout << "Status: " << (p.inrepair ? "In repairing" : "Running") << endl;
 
 }
