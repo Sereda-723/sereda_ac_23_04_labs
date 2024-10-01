@@ -54,3 +54,22 @@ void ViewPipe(Pipe p) {
     cout << "Status: " << (p.inrepair ? "In repairing" : "Running") << endl;
 
 }
+
+
+// Статус трубы
+
+void EditStatusPipe(Pipe& p) {
+    if (p.name.empty()) {
+        cout << "Pipe was not found.";
+        return;
+    }
+
+    cout << "The current status of the pipe:" << (p.inrepair ? "In repairing" : "Running") << endl;
+    cout << "Enter a new status ( 1 - In repairing, 0 - Running)";
+    int status;
+    while (!(cin >> status) || (status != 0 && status != 1)) {
+        cout << "Invalid value. Enter 1 or 0 ( 1 - In repairing, 0 - Running): ";
+    }
+    p.inrepair = status;
+
+}
