@@ -26,10 +26,10 @@ struct Station {
 //Добавление трубы
 
 void AddPipe(Pipe& p) {
-    cout << "Enter the name of the pipe (Positive value): ";
+    cout << "Enter the name of the pipe: ";
     getline(cin, p.name);
 
-    cout << "Enter the length of the pipe: ";
+    cout << "Enter the length of the pipe (positive value): ";
 
     while(!(cin >> p.length) || p.length <=0) {
         cout << "Invalid value. Enter a positive number";
@@ -72,4 +72,29 @@ void EditStatusPipe(Pipe& p) {
     }
     p.inrepair = status;
 
+}
+
+
+
+void AddStation(Station& s) {
+    cout << "Enter the name of the station (Positive value): ";
+    getline(cin, s.name);
+
+    cout << "Enter the number of workshops (Positive value): ";
+
+    while(!(cin >> s.workshops) || s.workshops <=0) {
+        cout << "Invalid value. Enter a positive number";
+    }
+
+    cout << "Enter the number of Active workshops: ";
+
+    while(!(cin >> s.activeworkshops) || s.activeworkshops <=0 || s.activeworkshops > s.workshops) {
+        cout << "Invalid value. Enter a number from 0 to " << s.workshops << ": ";
+    }
+
+    cout << "Enter the efficiency of workshop: ";
+
+    while(!(cin >> s.station_efficiency) || s.station_efficiency <= 0) {
+        cout << "Invalid value. Enter a positive number";
+    }
 }
