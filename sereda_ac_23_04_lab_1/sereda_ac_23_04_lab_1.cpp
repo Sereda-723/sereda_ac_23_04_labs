@@ -168,20 +168,4 @@ void EditStatusStation(Station& s) {
 
      cin.clear();
     cin.ignore(numeric_limits<streamsize>::max(), '\n');
-
-
-
-
-
-
-
-    int status;
-    while (!(cin >> status) || (status != 0 && status != 1)) {
-        cout << "Invalid value. Enter 1 or 0 ( 1 - In repairing, 0 - Running): ";
-        cin.clear();
-        cin.ignore(numeric_limits<streamsize>::max(), '\n');
-    }
-    p.inrepair = status;
-    cin.ignore(numeric_limits<streamsize>::max(), '\n');
-
 }
