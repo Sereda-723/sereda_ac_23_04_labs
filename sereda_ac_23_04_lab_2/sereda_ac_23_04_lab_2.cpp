@@ -7,7 +7,7 @@ using namespace std;
 
 int main() {
 
-    setlocale(LC_ALL, "Russian");
+    setlocale(LC_ALL, "RU");
 
     cout << "Helllo wo!" << endl;
 

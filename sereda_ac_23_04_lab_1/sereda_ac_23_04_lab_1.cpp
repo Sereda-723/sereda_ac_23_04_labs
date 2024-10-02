@@ -83,6 +83,7 @@ void EditStatusPipe(Pipe& p) {
 }
 
 
+//Добавление Станции
 
 void AddStation(Station& s) {
     cout << "Enter the name of the station (Positive value): ";
