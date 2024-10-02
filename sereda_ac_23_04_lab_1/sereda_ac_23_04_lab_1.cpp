@@ -1,7 +1,7 @@
 #include <iostream>
 #include <string>
 #include <limits>
-
+#include <fstream>
 
 using namespace std;
 
@@ -52,7 +52,7 @@ void AddPipe(Pipe& p) {
 // Вывод информации о трубек
 
 void ViewPipe(Pipe p) {
-    cout << "Information about the pipe:";
+    cout << "Information about the pipe:"<< endl;
     cout << "Name: " << p.name << endl;
     cout << "Length: " << p.length << endl;
     cout << "Diameter: " << p.diameter << endl;
@@ -69,8 +69,8 @@ void EditStatusPipe(Pipe& p) {
         return;
     }
 
-    cout << "The current status of the pipe:" << (p.inrepair ? "In repairing" : "Running") << endl;
-    cout << "Enter a new status ( 1 - In repairing, 0 - Running)";
+    cout << "The current status of the pipe: " << (p.inrepair ? "In repairing" : "Running") << endl;
+    cout << "Enter a new status ( 1 - In repairing, 0 - Running): ";
     int status;
     while (!(cin >> status) || (status != 0 && status != 1)) {
         cout << "Invalid value. Enter 1 or 0 ( 1 - In repairing, 0 - Running): ";
@@ -119,7 +119,7 @@ void AddStation(Station& s) {
 
 // Вывод информации о станции
 void ViewStation(Station s) {
-    cout << "Information about the station:";
+    cout << "Information about the station:"<< endl;
     cout << "Name: " << s.name << endl;
     cout << "Number of workshops: " << s.workshops << endl;
     cout << "Number of Active workshops: " << s.activeworkshops << endl;
@@ -168,4 +168,131 @@ void EditStatusStation(Station& s) {
 
      cin.clear();
     cin.ignore(numeric_limits<streamsize>::max(), '\n');
+}
+
+
+//Сохранение данных трубы в файл
+
+void SavePipe(const Pipe& p, ofstream& outFile) {
+    outFile << p.name << endl;
+    outFile << p.length << endl;
+    outFile << p.diameter << endl;
+    outFile << p.inrepair << endl;
+}
+
+//Сохранение данных станции в файл
+
+void SaveStation(const Station& s, ofstream& outFile) {
+    outFile << s.name << endl;
+    outFile << s.workshops << endl;
+    outFile << s.activeworkshops << endl;
+    outFile << s.station_efficiency << endl;
+}
+
+// Загрузка трубы из файла
+void LoadPipe(Pipe& p, ifstream& inFile) {
+    getline(inFile, p.name);
+    inFile >> p.length;
+    inFile >> p.diameter;
+    inFile >> p.inrepair;
+    inFile.ignore(numeric_limits<streamsize>::max(), '\n');
+}
+
+// загрузка станции из файла
+void LoadStation(Station& s, ifstream& inFile) {
+    getline(inFile, s.name);
+    inFile >> s.workshops;
+    inFile >> s.activeworkshops;
+    inFile >> s.station_efficiency;
+    inFile.ignore(numeric_limits<streamsize>::max(), '\n');
+}
+
+// Сохранение
+void SaveData(const Pipe& p, const Station& s) {
+    ofstream outFile("data.txt");
+    if (outFile.is_open()) {
+        SavePipe(p, outFile);
+        SaveStation(s, outFile);
+        outFile.close();
+        cout << "The data has been successfully saved to a file." << endl;
+    } else {
+        cout << "Error, try again." << endl;
+    }
+}
+
+void LoadData(Pipe& p, Station& s) {
+    ifstream inFile("data.txt");
+    if (inFile.is_open()) {
+        LoadPipe(p, inFile);
+        LoadStation(s, inFile);
+        inFile.close();
+        cout << "The data has been uploaded successfully." << endl;
+    } else {
+        cout << "Error, try again." << endl;
+    }
+}
+
+int main() {
+    Pipe pipe;
+    Station station;
+
+    while (true) {
+        cout << "Menu:" << endl;
+        cout << "1. Add a pipe" << endl;
+        cout << "2. Add a station" << endl;
+        cout << "3. Viewing all objects" << endl;
+        cout << "4. Edit the pipe" << endl;
+        cout << "5. Edit the station" << endl;
+        cout << "6. Save the objects" << endl;
+        cout << "7. Load the objects" << endl;
+        cout << "0. Exit" << endl;
+        cout << "Select an action: " << endl;
+
+        int choice;
+        if (!(cin >> choice)) {
+            cout << "Incorrect input. Please enter a number from the given options." << endl;
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            continue;
+        }
+
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+         switch (choice) {
+            case 1:
+                AddPipe(pipe);
+                break;
+            case 2:
+                AddStation(station);
+                break;
+             case 3:
+                if (!pipe.name.empty())
+                    ViewPipe(pipe);
+                else
+                    cout << "The pipe was not found" << endl;
+                if (!station.name.empty())
+                    ViewStation(station);
+                else
+                    cout << "The station was not found" << endl;
+                break;
+            case 4:
+                EditStatusPipe(pipe);
+                break;
+            case 5:
+                EditStatusStation(station);
+                break;
+            case 6:
+                SaveData(pipe, station);
+                break;
+            case 7:
+                LoadData(pipe, station);
+                break;
+            case 0:
+                cout << "Exit..." << endl;
+                return 0;
+            default:
+                cout << "Incorrect input. Please enter a number from the given options." << endl;
+                break;
+}
+}
 }
