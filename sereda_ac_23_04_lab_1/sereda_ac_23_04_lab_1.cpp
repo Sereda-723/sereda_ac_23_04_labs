@@ -11,7 +11,7 @@ using namespace std;
 struct Pipe {
     string name;
     float length = 0.0;
-    float diameter = 0.0;
+    int diameter = 0;
     bool inrepair = false;
 };
 
@@ -28,7 +28,7 @@ struct Station {
 
 void AddPipe(Pipe& p) {
     cout << "Enter the name of the pipe: ";
-    getline(cin, p.name);
+    getline(cin>>ws, p.name);
 
     cout << "Enter the length of the pipe (positive value): ";
     while(!(cin >> p.length) || p.length <=0) {
@@ -63,6 +63,25 @@ void ViewPipe(Pipe p) {
 
 // Статус трубы
 
+// void EditStatusPipe(Pipe& p) {
+//     if (p.name.empty()) {
+//         cout << "Pipe was not found.";
+//         return;
+//     }
+
+//     cout << "The current status of the pipe: " << (p.inrepair ? "In repairing" : "Running") << endl;
+//     cout << "Enter a new status ( 1 - In repairing, 0 - Running): ";
+//     int status;
+//     while (!(cin >> status) || (status != 0 && status != 1)) {
+//         cout << "Invalid value. Enter 1 or 0 ( 1 - In repairing, 0 - Running): ";
+//         cin.clear();
+//         cin.ignore(numeric_limits<streamsize>::max(), '\n');
+//     }
+//     p.inrepair = status;
+//     cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+// }
+
 void EditStatusPipe(Pipe& p) {
     if (p.name.empty()) {
         cout << "Pipe was not found.";
@@ -71,23 +90,25 @@ void EditStatusPipe(Pipe& p) {
 
     cout << "The current status of the pipe: " << (p.inrepair ? "In repairing" : "Running") << endl;
     cout << "Enter a new status ( 1 - In repairing, 0 - Running): ";
-    int status;
-    while (!(cin >> status) || (status != 0 && status != 1)) {
+    while (!(cin >> p.inrepair) || (p.inrepair != 0 && p.inrepair != 1)) {
         cout << "Invalid value. Enter 1 or 0 ( 1 - In repairing, 0 - Running): ";
         cin.clear();
         cin.ignore(numeric_limits<streamsize>::max(), '\n');
     }
-    p.inrepair = status;
-    cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
 }
+
+// void EditStatusPipe(Pipe& p) {
+//     p.inrepair = !p.inrepair;
+
+// }
 
 
 //Добавление Станции
 
 void AddStation(Station& s) {
     cout << "Enter the name of the station (Positive value): ";
-    getline(cin, s.name);
+    getline(cin>>ws, s.name);
 
     cout << "Enter the number of workshops (Positive value): ";
 
@@ -126,8 +147,6 @@ void ViewStation(Station s) {
     cout << "Efficiency: " << s.station_efficiency << endl;
 
 }
-
-
 // Статус станции
 
 void EditStatusStation(Station& s) {
@@ -166,8 +185,7 @@ void EditStatusStation(Station& s) {
         }
     }
 
-     cin.clear();
-    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
 }
 
 
@@ -195,7 +213,6 @@ void LoadPipe(Pipe& p, ifstream& inFile) {
     inFile >> p.length;
     inFile >> p.diameter;
     inFile >> p.inrepair;
-    inFile.ignore(numeric_limits<streamsize>::max(), '\n');
 }
 
 // загрузка станции из файла
@@ -204,7 +221,6 @@ void LoadStation(Station& s, ifstream& inFile) {
     inFile >> s.workshops;
     inFile >> s.activeworkshops;
     inFile >> s.station_efficiency;
-    inFile.ignore(numeric_limits<streamsize>::max(), '\n');
 }
 
 // Сохранение
@@ -256,7 +272,6 @@ int main() {
             continue;
         }
 
-        cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
          switch (choice) {
             case 1:
