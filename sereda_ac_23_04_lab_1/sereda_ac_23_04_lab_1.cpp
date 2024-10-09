@@ -63,25 +63,6 @@ void ViewPipe(Pipe p) {
 
 // Статус трубы
 
-// void EditStatusPipe(Pipe& p) {
-//     if (p.name.empty()) {
-//         cout << "Pipe was not found.";
-//         return;
-//     }
-
-//     cout << "The current status of the pipe: " << (p.inrepair ? "In repairing" : "Running") << endl;
-//     cout << "Enter a new status ( 1 - In repairing, 0 - Running): ";
-//     int status;
-//     while (!(cin >> status) || (status != 0 && status != 1)) {
-//         cout << "Invalid value. Enter 1 or 0 ( 1 - In repairing, 0 - Running): ";
-//         cin.clear();
-//         cin.ignore(numeric_limits<streamsize>::max(), '\n');
-//     }
-//     p.inrepair = status;
-//     cin.ignore(numeric_limits<streamsize>::max(), '\n');
-
-// }
-
 void EditStatusPipe(Pipe& p) {
     if (p.name.empty()) {
         cout << "Pipe was not found.";
@@ -97,11 +78,6 @@ void EditStatusPipe(Pipe& p) {
     }
 
 }
-
-// void EditStatusPipe(Pipe& p) {
-//     p.inrepair = !p.inrepair;
-
-// }
 
 
 //Добавление Станции
@@ -192,6 +168,7 @@ void EditStatusStation(Station& s) {
 //Сохранение данных трубы в файл
 
 void SavePipe(const Pipe& p, ofstream& outFile) {
+    outFile << "PIPE" << endl;
     outFile << p.name << endl;
     outFile << p.length << endl;
     outFile << p.diameter << endl;
@@ -201,6 +178,7 @@ void SavePipe(const Pipe& p, ofstream& outFile) {
 //Сохранение данных станции в файл
 
 void SaveStation(const Station& s, ofstream& outFile) {
+    outFile << "STATION" << endl;
     outFile << s.name << endl;
     outFile << s.workshops << endl;
     outFile << s.activeworkshops << endl;
@@ -227,8 +205,12 @@ void LoadStation(Station& s, ifstream& inFile) {
 void SaveData(const Pipe& p, const Station& s) {
     ofstream outFile("data.txt");
     if (outFile.is_open()) {
-        SavePipe(p, outFile);
-        SaveStation(s, outFile);
+        if (!p.name.empty()) {
+            SavePipe(p, outFile);
+        }
+        if (!s.name.empty()) {
+            SaveStation(s, outFile);
+        }
         outFile.close();
         cout << "The data has been successfully saved to a file." << endl;
     } else {
@@ -239,6 +221,16 @@ void SaveData(const Pipe& p, const Station& s) {
 void LoadData(Pipe& p, Station& s) {
     ifstream inFile("data.txt");
     if (inFile.is_open()) {
+        string line;
+        while (getline(inFile, line)) {
+            if (line == "PIPE") {
+                LoadPipe(p, inFile);
+            } else if(line == "STATION") {
+                LoadStation(s, inFile);
+            }
+
+
+        }
         LoadPipe(p, inFile);
         LoadStation(s, inFile);
         inFile.close();
