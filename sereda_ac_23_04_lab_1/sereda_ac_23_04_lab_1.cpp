@@ -51,7 +51,7 @@ void AddPipe(Pipe& p) {
 
 // Вывод информации о трубек
 
-void ViewPipe(Pipe p) {
+void ViewPipe(const Pipe& p) {//!!
     cout << "Information about the pipe:"<< endl;
     cout << "Name: " << p.name << endl;
     cout << "Length: " << p.length << endl;
@@ -115,7 +115,7 @@ void AddStation(Station& s) {
 
 
 // Вывод информации о станции
-void ViewStation(Station s) {
+void ViewStation(const Station& s) {//!!!
     cout << "Information about the station:"<< endl;
     cout << "Name: " << s.name << endl;
     cout << "Number of workshops: " << s.workshops << endl;
@@ -142,7 +142,6 @@ void EditStatusStation(Station& s) {
         cout << "Incorrect choice. Enter '1' to start or '2' to stop the workshop: ";
         cin.clear();
         cin.ignore(numeric_limits<streamsize>::max(), '\n');
-
     }
 
     if (choice == 1){
@@ -160,8 +159,6 @@ void EditStatusStation(Station& s) {
             cout << "All workshops have already been stopped. The current number of active workshops: " << s.activeworkshops << "/" << s.workshops << endl;
         }
     }
-
-
 }
 
 
@@ -222,6 +219,8 @@ void LoadData(Pipe& p, Station& s) {
     ifstream inFile("data.txt");
     if (inFile.is_open()) {
         string line;
+        p = {};
+        s = Station();
         while (getline(inFile, line)) {
             if (line == "PIPE") {
                 LoadPipe(p, inFile);
@@ -231,8 +230,7 @@ void LoadData(Pipe& p, Station& s) {
 
 
         }
-        LoadPipe(p, inFile);
-        LoadStation(s, inFile);
+
         inFile.close();
         cout << "The data has been uploaded successfully." << endl;
     } else {
